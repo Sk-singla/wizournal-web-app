@@ -1,0 +1,1 @@
+# https://wizournal.vercel.app
