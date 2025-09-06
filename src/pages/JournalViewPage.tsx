@@ -1,20 +1,20 @@
-"use client"
+
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useParams, useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { ArrowLeft, Edit3 } from "lucide-react"
 import type { Journal } from "../types"
 import { apiService } from "../services/api"
 import { generateBackgroundStyle } from "../utils/backgroundUtils"
 import { Button } from "../components/ui/Button"
 
-export const JournalViewPage: React.FC = () => {
+const JournalViewPage: React.FC = () => {
   const [journal, setJournal] = useState<Journal | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { id } = useParams()
 
   useEffect(() => {
     fetchJournal()
@@ -66,7 +66,7 @@ export const JournalViewPage: React.FC = () => {
   return (
     <div className="min-h-screen" style={backgroundStyle}>
       <header className="flex items-center justify-between p-4 bg-black bg-opacity-20">
-        <button onClick={() => navigate("/")} className="text-white hover:text-gray-300">
+  <button onClick={() => navigate("/")} className="text-white hover:text-gray-300">
           <ArrowLeft className="w-6 h-6" />
         </button>
         <Button
@@ -103,3 +103,5 @@ export const JournalViewPage: React.FC = () => {
     </div>
   )
 }
+
+export default JournalViewPage;

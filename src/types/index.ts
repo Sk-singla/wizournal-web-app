@@ -51,7 +51,7 @@ export interface BackgroundInfo {
 export interface JournalTheme {
   displayName: string
   description: string
-  // key: string
+  key: string
 }
 
 export interface Journal {

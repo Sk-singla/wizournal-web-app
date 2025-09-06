@@ -1,4 +1,4 @@
-"use client"
+
 import React, { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
@@ -6,7 +6,7 @@ import { Button } from "../components/ui/Button"
 import { Input } from "../components/ui/Input"
 import { apiService } from "../services/api"
 
-export const LoginPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   React.useEffect(() => {
     // Wake up daemon
     apiService.ping().catch((error) => console.error(error))
@@ -25,8 +25,8 @@ export const LoginPage: React.FC = () => {
     setError("")
 
     try {
-      await login({ email, password })
-      navigate("/")
+  await login({ email, password })
+  navigate("/")
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed")
     } finally {
@@ -35,74 +35,92 @@ export const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-6">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-            <p className="text-gray-600">Sign in to your Wizournal account</p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <Input
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email"
-            />
-
-            <Input
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
-            />
-
-            {error && <div className="text-red-600 text-sm text-center">{error}</div>}
-
-            <Button type="submit" isLoading={isLoading} className="w-full py-3">
-              Sign In
-            </Button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-gray-600">
-              Don't have an account?{" "}
-              <Link to="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
-                Sign up
-              </Link>
-            </p>
+    <>
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black opacity-40"></div>
+          <div className="relative bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
+            <div className="animate-spin mb-4">
+              <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+              </svg>
+            </div>
+            <div className="text-lg font-semibold text-gray-900 mb-2">Loading...</div>
+            <div className="text-gray-600 text-center">Waking up Render's instance.<br />Might take some time...</div>
           </div>
         </div>
+      )}
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center p-4">
+        <div className="w-full max-w-md space-y-6">
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+              <p className="text-gray-600">Sign in to your Wizournal account</p>
+            </div>
 
-        {/* Guest Login Card */}
-        <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Try as Guest</h2>
-          <p className="text-gray-600 mb-4 text-center">Explore Wizournal instantly with a guest account.</p>
-          <Button
-            className="w-full py-2 text-base font-medium bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white"
-            onClick={async () => {
-              setIsLoading(true)
-              setError("")
-              try {
-                await login({ email: "test@test", password: "test" })
-                navigate("/")
-              } catch (err: any) {
-                setError("Guest login failed")
-              } finally {
-                setIsLoading(false)
-              }
-            }}
-            disabled={isLoading}
-          >
-            Continue as Guest
-          </Button>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <Input
+                label="Email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+              />
+
+              <Input
+                label="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Enter your password"
+              />
+
+              {error && <div className="text-red-600 text-sm text-center">{error}</div>}
+
+              <Button type="submit" isLoading={isLoading} className="w-full py-3">
+                Sign In
+              </Button>
+            </form>
+
+            <div className="mt-6 text-center">
+              <p className="text-gray-600">
+                Don't have an account?{" "}
+                <Link to="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
+                  Sign up
+                </Link>
+              </p>
+            </div>
+          </div>
+
+          {/* Guest Login Card */}
+          <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center">
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">Try as Guest</h2>
+            <p className="text-gray-600 mb-4 text-center">Explore Wizournal instantly with a guest account.</p>
+            <Button
+              className="w-full py-2 text-base font-medium bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white"
+              onClick={async () => {
+                setIsLoading(true)
+                setError("")
+                try {
+                  await login({ email: "test@test", password: "test" })
+                  navigate("/")
+                } catch (err: any) {
+                  setError("Guest login failed")
+                } finally {
+                  setIsLoading(false)
+                }
+              }}
+              disabled={isLoading}
+            >
+              Continue as Guest
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
+export default LoginPage

@@ -1,4 +1,4 @@
-"use client"
+
 
 import type React from "react"
 import { AnimatePresence, motion } from "framer-motion"
@@ -11,7 +11,7 @@ import { apiService } from "../services/api"
 import { JournalCard } from "../components/JournalCard"
 import { Button } from "../components/ui/Button"
 
-export const HomePage: React.FC = () => {
+const HomePage: React.FC = () => {
   const [journals, setJournals] = useState<Journal[]>([])
   const [isLoading, setIsLoading] = useState(true)
   // Removed swipedJournalId state
@@ -36,8 +36,8 @@ export const HomePage: React.FC = () => {
 
   const handleDeleteJournal = async (journalId: string) => {
     try {
-      await apiService.deleteJournal(journalId)
       setJournals(journals.filter((j) => j.id !== journalId))
+      await apiService.deleteJournal(journalId)
     } catch (error) {
       console.error("Error deleting journal:", error)
     }
@@ -124,3 +124,5 @@ export const HomePage: React.FC = () => {
     </div>
   )
 }
+
+export default HomePage;

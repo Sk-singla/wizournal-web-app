@@ -1,4 +1,4 @@
-"use client"
+
 
 import type React from "react"
 import { useState } from "react"
@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthContext"
 import { Button } from "../components/ui/Button"
 import { Input } from "../components/ui/Input"
 
-export const SignupPage: React.FC = () => {
+ const SignupPage: React.FC = () => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -23,8 +23,8 @@ export const SignupPage: React.FC = () => {
     setError("")
 
     try {
-      await signup({ name, email, password })
-      navigate("/")
+  await signup({ name, email, password })
+  navigate("/")
     } catch (err: any) {
       setError(err.response?.data?.message || "Signup failed")
     } finally {
@@ -89,3 +89,5 @@ export const SignupPage: React.FC = () => {
     </div>
   )
 }
+
+export default SignupPage;

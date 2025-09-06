@@ -1,8 +1,8 @@
-"use client"
+
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useParams, useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { ArrowLeft, Check } from "lucide-react"
 import type { Journal } from "../types"
 import { apiService } from "../services/api"
@@ -10,15 +10,15 @@ import { Input } from "../components/ui/Input"
 import { Textarea } from "../components/ui/Textarea"
 import { Button } from "../components/ui/Button"
 
-export const EditJournalPage: React.FC = () => {
+const EditJournalPage: React.FC = () => {
   const [journal, setJournal] = useState<Journal | null>(null)
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
 
-  const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { id } = useParams()
 
   useEffect(() => {
     fetchJournal()
@@ -80,7 +80,7 @@ export const EditJournalPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
       <header className="flex items-center justify-between p-4 border-b border-gray-800">
-        <button onClick={() => navigate(`/journal/${journal.id}`)} className="text-white hover:text-gray-300">
+  <button onClick={() => navigate(`/journal/${journal.id}`)} className="text-white hover:text-gray-300">
           <ArrowLeft className="w-6 h-6" />
         </button>
       </header>
@@ -115,3 +115,5 @@ export const EditJournalPage: React.FC = () => {
     </div>
   )
 }
+
+export default EditJournalPage;

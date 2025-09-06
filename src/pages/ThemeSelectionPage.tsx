@@ -1,18 +1,18 @@
-"use client"
+
 
 import type React from "react"
 import { useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import { ThemeSelector } from "../components/ThemeSelector"
 import type { JournalTheme } from "../types"
 import { getThemePresets } from "../utils/backgroundUtils"
 import { apiService } from "../services/api"
 
-export const ThemeSelectionPage: React.FC = () => {
-  const location = useLocation()
+const ThemeSelectionPage: React.FC = () => {
   const navigate = useNavigate()
-  const { title, content } = location.state as { title: string; content: string }
+  const location = useLocation()
+  const { title, content } = location.state || { title: '', content: '' }
   const themePresets = getThemePresets()
   const [selectedTheme, setSelectedTheme] = useState<JournalTheme | null>(themePresets.length > 0 ? themePresets[0] : null)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -47,7 +47,7 @@ export const ThemeSelectionPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black">
       <header className="flex items-center p-4 border-b border-gray-800">
-        <button onClick={() => navigate(-1)} className="text-white hover:text-gray-300">
+  <button onClick={() => navigate(-1)} className="text-white hover:text-gray-300">
           <ArrowLeft className="w-6 h-6" />
         </button>
       </header>
@@ -73,3 +73,5 @@ export const ThemeSelectionPage: React.FC = () => {
     </div>
   )
 }
+
+export default ThemeSelectionPage;

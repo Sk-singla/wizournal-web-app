@@ -1,4 +1,4 @@
-"use client"
+
 import React, { useState } from "react"
 import { useVoiceRecording } from "../hooks/useVoiceRecording"
 import { useNavigate } from "react-router-dom"
@@ -9,7 +9,7 @@ import { Input } from "../components/ui/Input"
 import { Textarea } from "../components/ui/Textarea"
 import { apiService } from "../services/api"
 
-export const CreateJournalPage: React.FC = () => {
+const CreateJournalPage: React.FC = () => {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   // Remove isVoiceMode
@@ -45,9 +45,7 @@ export const CreateJournalPage: React.FC = () => {
 
   const handleAiEnhance = () => {
     // Navigate to theme selection
-    navigate("/theme-selection", {
-      state: { title, content },
-    })
+    navigate("/theme-selection", { state: { title, content } })
   }
 
   // Remove showSaveOptions conditional UI
@@ -55,7 +53,7 @@ export const CreateJournalPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
       <header className="flex items-center justify-between p-4 border-b border-gray-800">
-        <button onClick={() => navigate("/")} className="text-white hover:text-gray-300">
+  <button onClick={() => navigate("/")} className="text-white hover:text-gray-300">
           <ArrowLeft className="w-6 h-6" />
         </button>
       </header>
@@ -124,3 +122,4 @@ export const CreateJournalPage: React.FC = () => {
     </div>
   )
 }
+export default CreateJournalPage
