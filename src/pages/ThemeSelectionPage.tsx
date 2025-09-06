@@ -36,9 +36,10 @@ const ThemeSelectionPage: React.FC = () => {
       }
 
       navigate(`/journal/${response.data.id}`)
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error generating journal:", error)
-      alert("Failed to generate journal. Please try again.")
+      const status = error?.response?.status;
+      alert(`Failed to generate journal. Status code: ${status || 'Unknown'}\nPlease try again.`)
     } finally {
       setIsGenerating(false)
     }
