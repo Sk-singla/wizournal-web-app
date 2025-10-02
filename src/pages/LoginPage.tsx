@@ -15,6 +15,60 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
+  // Unified fun messages for the loading state (all use typewriter effect)
+  const funMessages = [
+    {
+      text: "Meanwhile, check out my portfolio...",
+      link: {
+        label: "Portfolio",
+        url: "https://samarth-gupta.vercel.app"
+      }
+    },
+    {
+      text: "Or connect with me on LinkedIn...",
+      link: {
+        label: "LinkedIn",
+        url: "https://linkedin.com/in/samarth-g"
+      }
+    },
+    {
+      text: "Fun fact: The first computer bug was a real moth! 🦋"
+    },
+    {
+      text: "Fun fact: The first mouse was made of wood. No, really!"
+    },
+    {
+      text: "Loading... If this takes too long, try telling your computer a joke!"
+    },
+  ];
+  const [messageIndex, setMessageIndex] = useState(0);
+  React.useEffect(() => {
+    if (!isLoading) return;
+    const interval = setInterval(() => {
+      setMessageIndex((prev) => (prev + 1) % funMessages.length)
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isLoading]);
+
+  // Typewriter effect for all fun messages
+  const [typedText, setTypedText] = useState("");
+  React.useEffect(() => {
+    if (!isLoading) return;
+    const msg = funMessages[messageIndex];
+    setTypedText("");
+    let i = 0;
+    const interval = setInterval(() => {
+      setTypedText(msg.text.slice(0, i + 1));
+      i++;
+      if (i >= msg.text.length) clearInterval(interval);
+    }, 40);
+    return () => clearInterval(interval);
+  }, [messageIndex, isLoading]);
+
+  // Typewriter cursor animation
+  const TypewriterCursor = () => (
+    <span className="inline-block w-2 h-5 bg-blue-600 align-bottom animate-pulse ml-1" style={{ borderRadius: 2 }}></span>
+  );
 
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -25,8 +79,8 @@ const LoginPage: React.FC = () => {
     setError("")
 
     try {
-  await login({ email, password })
-  navigate("/")
+      await login({ email, password })
+      navigate("/")
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed")
     } finally {
@@ -39,15 +93,30 @@ const LoginPage: React.FC = () => {
       {isLoading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black opacity-40"></div>
-          <div className="relative bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
-            <div className="animate-spin mb-4">
-              <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="relative bg-white rounded-xl shadow-lg p-8 flex flex-col items-center min-w-[320px] min-h-[260px]">
+            <div className="mb-4 animate-spin-slow">
+              <svg className="w-10 h-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
               </svg>
             </div>
-            <div className="text-lg font-semibold text-gray-900 mb-2">Loading...</div>
-            <div className="text-gray-600 text-center">Waking up Render's instance.<br />Might take some time...</div>
+            <div className="text-lg font-semibold text-gray-900 mb-2 text-center">
+              Waking up Render's instance...<br />Might take a few seconds.
+            </div>
+            <div className="text-base text-gray-800 mb-2 min-h-[48px] flex flex-col items-center justify-center transition-all duration-500 ease-in-out">
+              <span className="inline-block">{typedText}<TypewriterCursor /></span>
+              {typedText === funMessages[messageIndex].text && funMessages[messageIndex].link && (
+                <a
+                  href={funMessages[messageIndex].link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block mt-2 text-blue-600 underline text-base hover:text-blue-800 transition-colors duration-200"
+                >
+                  {funMessages[messageIndex].link.label}
+                </a>
+              )}
+            </div>
+            <div className="text-gray-600 text-center text-sm mt-2">Hang tight, your experience is loading with a dash of fun!</div>
           </div>
         </div>
       )}

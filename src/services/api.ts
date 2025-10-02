@@ -82,7 +82,7 @@ class ApiService {
   }
 
   async refreshToken(refreshToken: string): Promise<AxiosResponse<AuthResponse>> {
-    return this.api.post("/auth/refresh-token", { refreshToken })
+    return axios.post(`${this.baseURL}/auth/refresh`, { refreshToken })
   }
 
   // Journal endpoints
